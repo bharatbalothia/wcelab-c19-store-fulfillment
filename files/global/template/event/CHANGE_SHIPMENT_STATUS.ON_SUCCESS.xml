@@ -1,0 +1,10 @@
+<Shipment ShipmentKey="" ShipmentNo="" Status="" StatusDate="" StationId="" StationType="" OrderHeaderKey="" DocumentType="" ShipmentType="">
+	<ShipmentStatusAudits>
+		<ShipmentStatusAudit ShipmentStatusAuditKey="" OldStatus="" NewStatus="" OldStatusDate="" NewStatusDate="" ReasonCode="" ReasonText=""/>
+	</ShipmentStatusAudits>
+	<ShipmentLines>
+		<ShipmentLine ShipmentKey="" OrderHeaderKey="">
+			<Order DocumentType="" EnterpriseCode="" OrderNo="" OrderPurpose="" OrderHeaderKey=""/>
+		</ShipmentLine>
+	</ShipmentLines>
+</Shipment>
