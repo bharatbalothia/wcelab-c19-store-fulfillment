@@ -19,6 +19,7 @@ import com.ibm.sterling.afc.jsonutil.PLTJSONUtils;
 import com.yantra.interop.japi.YIFApi;
 import com.yantra.interop.japi.YIFCustomApi;
 import com.yantra.yfc.core.YFCObject;
+import com.yantra.yfc.dom.YFCDocument;
 import com.yantra.yfc.log.YFCLogCategory;
 import com.yantra.yfs.japi.YFSEnvironment;
 
@@ -37,27 +38,52 @@ public class RestUtility implements YIFCustomApi{
 	
 		private String getBase64EncodedAuthString(){
 			String strCredential = props.getProperty("UserId")+":"+props.getProperty("Password");
-			System.out.println("getBase64EncodedAuthString  Credential is : " +strCredential);
-			return Base64.encodeBase64String(strCredential.getBytes());
+			return "Basic "+Base64.encodeBase64String(strCredential.getBytes());
 		}
 		
 		public void setProperties(Properties prop) throws Exception {
 			this.props = prop;
 		}
 		
+		public Document invokeWebservice(YFSEnvironment env, Document inDoc) {
+			Document docResponse = null;
+			String strResponse = null;
+			String strRequestmethod = props.getProperty("req_method");
+			String strgetUrl = props.getProperty("get_url");
+			String strpostUrl = props.getProperty("post_url");
+			String strUrlParams = inDoc.getDocumentElement().getAttribute("url_params");
+			try {
+				org.apache.commons.json.JSONObject jsonObj = PLTJSONUtils.getJSONObjectFromXML(inDoc.getDocumentElement(), null, null);
+				if(strRequestmethod.equals("GET")){
+					strResponse = invokeGet(strgetUrl, strUrlParams);
+					
+				}else if (strRequestmethod.equals("POST")){
+					strResponse = sendPOST(strpostUrl, jsonObj.toString());
+				}
+				Document xmlResponse = PLTJSONUtils.getXmlFromJSON(strResponse, "Response");
+				System.out.println("invokePOST method call end : " +YFCDocument.getDocumentFor(xmlResponse).toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			return docResponse;
+		}
+
 		
-	private String invokeGet(YFSEnvironment env, Document inDoc) {
+	private String invokeGet(String url, String message) {
 		String strAuth = getBase64EncodedAuthString();
+		String strUrl = url+message;
 		HttpURLConnection con = null;
 		StringBuffer response = null;
 		try{
 			log.debug("invokeGet method call start : ");
-				strAuthUrl = props.getProperty("strAuthUrl");
-			URL obj = new URL(strAuthUrl);
+			URL obj = new URL(strUrl);
 			con = (HttpURLConnection) obj.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("getContentType", "application/x-www-form-urlencoded");
-			con.setRequestProperty("Authorization", "Basic "+strAuth);
+			con.setRequestProperty("Authorization", strAuth);
 
 			int responseCode = con.getResponseCode();
 			log.debug("invokeGet response code is : " +responseCode);
@@ -95,15 +121,14 @@ public class RestUtility implements YIFCustomApi{
 
 	}
 	
-	private String sendPOST(YFSEnvironment env, Document  inDoc) throws IOException, JSONException {
+	public String sendPOST(String url, String restmessage) throws IOException, JSONException {
 		String strAuth = getBase64EncodedAuthString();
 		HttpURLConnection con = null;
 		StringBuffer response = null;
+		String strUrl = url;
 		try{
 			log.debug("invokePOST method call start : ");
-			org.apache.commons.json.JSONObject jsonObj = PLTJSONUtils.getJSONObjectFromXML(inDoc.getDocumentElement(), null, null);
-			strAuthUrl = props.getProperty("strAuthUrl");
-			URL obj = new URL(strAuthUrl);
+			URL obj = new URL(strUrl);
 		con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Authorization", strAuth);
@@ -112,7 +137,7 @@ public class RestUtility implements YIFCustomApi{
 
 		con.setDoOutput(true);
 		OutputStream os = con.getOutputStream();
-		os.write(jsonObj.toString().getBytes());
+		os.write(restmessage.getBytes());
 		os.flush();
 		os.close();
 		
