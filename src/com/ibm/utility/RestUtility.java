@@ -46,8 +46,8 @@ public class RestUtility implements YIFCustomApi{
 		}
 		
 		public Document invokeWebservice(YFSEnvironment env, Document inDoc) {
-			Document docResponse = null;
 			String strResponse = null;
+			Document xmlResponse = null;
 			String strRequestmethod = props.getProperty("req_method");
 			String strgetUrl = props.getProperty("get_url");
 			String strpostUrl = props.getProperty("post_url");
@@ -60,7 +60,7 @@ public class RestUtility implements YIFCustomApi{
 				}else if (strRequestmethod.equals("POST")){
 					strResponse = sendPOST(strpostUrl, jsonObj.toString());
 				}
-				Document xmlResponse = PLTJSONUtils.getXmlFromJSON(strResponse, "Response");
+				xmlResponse = PLTJSONUtils.getXmlFromJSON(strResponse, "Response");
 				System.out.println("invokePOST method call end : " +YFCDocument.getDocumentFor(xmlResponse).toString());
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -68,7 +68,7 @@ public class RestUtility implements YIFCustomApi{
 				e.printStackTrace();
 			}
 			
-			return docResponse;
+			return xmlResponse;
 		}
 
 		
