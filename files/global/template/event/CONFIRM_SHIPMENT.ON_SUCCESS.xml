@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shipment ActualShipmentDate="" CarrierServiceCode="" DeliveryMethod="" EnterpriseCode="" ExpectedDeliveryDate="" ExpectedShipmentDate="" HazardousMaterialFlag="" NumOfCartons="" OrderNo="" RequestedCarrierServiceCode="" RequestedDeliveryDate="" RequestedShipmentDate="" SCAC="" SellerOrganizationCode="" ShipNode="" ShipmentNo="" TrackingNo="" >   
+	<ShipmentLines>       
+		<ShipmentLine PrimeLineNo="" ItemID="" Quantity="" UnitOfMeasure="" OrderHeaderKey="">  
+		</ShipmentLine> 	
+   </ShipmentLines>
+</Shipment>
