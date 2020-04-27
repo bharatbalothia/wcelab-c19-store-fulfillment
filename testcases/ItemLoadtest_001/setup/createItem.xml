@@ -1,0 +1,7 @@
+<!-- ExecuteType:SterlingService -->
+<!-- ExecuteMethod:ItemMasterLoadService -->
+<ItemList>
+	<Item ItemGroupCode="PROD" ItemID="TEST_ITEM_01" OrganizationCode="DEFAULT" UnitOfMeasure="EACH">
+		<PrimaryInformation DefaultProductClass="" Description="TEST_ITEM_01" IsPickupAllowed="Y" IsReturnable="Y" IsShippingAllowed="Y" ShortDescription="" Status="3000"/>
+	</Item>
+</ItemList>

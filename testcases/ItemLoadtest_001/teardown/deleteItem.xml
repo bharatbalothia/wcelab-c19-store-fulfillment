@@ -1,0 +1,13 @@
+<!-- ExecuteType:SterlingApi -->
+<!-- ExecuteMethod:multiApi -->
+<!-- TestDesc:e02_Item_Management-S101test001 -->
+<MultiApi>
+	<API Name="manageItem">
+		<Input>
+		<ItemList>
+			<Item ItemGroupCode="PROD" ItemID="TEST_ITEM_01" OrganizationCode="DEFAULT" UnitOfMeasure="EACH" Action="Delete"/>
+		</ItemList>	
+		</Input>
+		<Template/>
+</API>
+</MultiApi>
